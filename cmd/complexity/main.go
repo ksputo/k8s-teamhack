@@ -23,7 +23,6 @@ const (
 )
 
 type Config struct {
-	Host string `envconfig:"default=localhost"`
 	Port string `envconfig:"default=3000"`
 }
 
@@ -70,12 +69,10 @@ func main() {
 		}
 	}).Methods(http.MethodPost)
 
-	err = http.ListenAndServe(cfg.Host+":"+cfg.Port, r)
+	err = http.ListenAndServe(":"+cfg.Port, r)
 	if err != nil {
 		logger.Fatal(err)
 	}
-
-	logger.Info("Server started on %s:%s", cfg.Host, cfg.Port)
 }
 
 func countComplexity(d time.Duration) string {

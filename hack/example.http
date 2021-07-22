@@ -13,8 +13,23 @@ Content-Type: application/json
   "duration": "2h"
 }
 
+### ingress POST
+POST localhost/task/1
+Content-Type: application/json
+
+{
+"id": "1",
+"name": "sample-task",
+"description": "just do it",
+"duration": "2h"
+}
+
+### ingress GET
+GET localhost/task/1
+Accept: application/json
+
 ### Get task by ID
-GET http://localhost:8080/task/2
+GET http://localhost:8080/task/1
 Accept: application/json
 
 ### Create task with ID '2'

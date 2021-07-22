@@ -3,6 +3,7 @@ package complexity
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -26,7 +27,7 @@ func (c *client) Get(duration string) (string, error) {
 
 	payload, err := json.Marshal(taskDuration)
 	if err != nil {
-		return "", errors.Wrap(err, "while creating HTTP request")
+		return "", errors.Wrap(err, "while marshalling payload")
 	}
 
 	req, err := http.NewRequest(http.MethodPost, c.baseUrl, bytes.NewBuffer(payload))
@@ -45,6 +46,7 @@ func (c *client) Get(duration string) (string, error) {
 		return "", errors.Wrap(err, "while reading HTTP response body")
 	}
 	var result model.Task
+	fmt.Println(string(bodyRaw))
 	if err = json.Unmarshal(bodyRaw, &result); err != nil {
 		return "", errors.Wrap(err, "while decoding HTTP response")
 	}

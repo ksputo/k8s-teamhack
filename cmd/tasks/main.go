@@ -15,7 +15,6 @@ import (
 type Config struct {
 	DbInMemory           bool   `envconfig:"default=true"`
 	ComplexityServiceURL string `envconfig:"default=http://localhost:3000/complexity"`
-	Host                 string `envconfig:"default=localhost"`
 	Port                 string `envconfig:"default=8080"`
 }
 
@@ -50,12 +49,11 @@ func main() {
 	h := api.NewHandler(taskService, logger)
 	r := mux.NewRouter()
 	h.AttachRoutes(r)
-	logger.Info("initiated here")
 
-	err = http.ListenAndServe(cfg.Host+":"+cfg.Port, r)
+	err = http.ListenAndServe(":"+cfg.Port, r)
 	if err != nil {
 		logger.Fatal(err)
 	}
 
-	logger.Info("Server started on %s:%s", cfg.Host, cfg.Port)
+	logger.Info("Server started on :%s", cfg.Port)
 }
