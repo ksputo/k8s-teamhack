@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complexity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: complexity
+  template:
+    metadata:
+      labels:
+        app: complexity
+    spec:
+      containers:
+        - name: complexity
+          image: ksputo161/complexity:0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: APP_PORT
+              value: "3000"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: complexity
+  labels:
+    app: complexity
+spec:
+  selector:
+    app: complexity
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasks
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasks
+  template:
+    metadata:
+      labels:
+        app: tasks
+    spec:
+      containers:
+        - name: tasks
+          image: ksputo161/tasks:0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APP_COMPLEXITY_SERVICE_URL
+              #value: "http://complexity.default.svc.cluster.local:3000/complexity"
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: complexityService.url
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: tasks
+  labels:
+    app: tasks
+spec:
+  selector:
+    app: tasks
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
